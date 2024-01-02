@@ -4,10 +4,6 @@ import { generateFilledArrayBoard, printBoard } from "./helpers.js";
 import { PredictorBoard } from "./predictor.js";
 import { TreeSearch, StrategyEnums } from "./treeSearch.js";
 
-// Game items set at start
-let _boardMaxX = -1,
-    _boardMaxY = -1;
-
 export default function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -42,6 +38,9 @@ export default function handler(req, res) {
   const myHead = gameState.you.body[0];
   const myNeck = gameState.you.body[1];
   const myLength = gameState.you.length;
+
+  const _boardMaxX = gameState.board.width - 1;
+  const _boardMaxY = gameState.board.height - 1;
   console.log("~~~" + myLength);
 
   console.log(`Turn # ${gameState.turn} (Current)`);
@@ -147,7 +146,7 @@ export default function handler(req, res) {
     return;
   }
   console.log("!!!!!! Skipped predicted move!!!!");
-  if (safeMoves.length == 0) {
+  if (safeMoves.length === 0) {
     console.log(`MOVE ${gameState.turn}: No safe moves detected! Moving down`);
     res.status(200).json({ move: "down" });
     return;

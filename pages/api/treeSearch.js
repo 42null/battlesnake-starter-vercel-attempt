@@ -89,24 +89,19 @@ export class TreeSearch {
         switch (strategy) {
             case StrategyEnums.MostOptions:
                 // TODO: WILL MAKE MORE EFFICENT ASAP
-                let forUpA = 0,
-                    forDownA = 0,
-                    forLeftA = 0,
-                    forRightA = 0;
-                // let forUpB = 0,
-                //   forDownB = 0,
-                //   forLeftB = 0,
-                //   forRightB = 0;
+                let counters = [{count: 0, direction: "up"},
+                                {count: 0, direction: "down"},
+                                {count: 0, direction: "left"},
+                                {count: 0, direction: "right"}];
+
                 condensed.forEach((path) => {
                     console.log("PATH" + JSON.stringify(path));
-                    if (path[0] === "up") {
-                        forUpA++;
-                    } else if (path[0] === "down") {
-                        forDownA++;
-                    } else if (path[0] === "left") {
-                        forLeftA++;
-                    } else if (path[0] === "right") {
-                        forRightA++;
+
+                    for(let i = 0; i < counters.length; i++){
+                        if (path[0] === counters[i].direction) {
+                            counters[i]++;
+                            break;
+                        }
                     }
                 });
                 // condensed.forEach((path) => {
@@ -120,17 +115,19 @@ export class TreeSearch {
                 //     forRightB++;
                 //   }
                 // });
-                console.log("Votes", forUpA, forDownA, forLeftA, forRightA);
-                const mostFirst = Math.max(forUpA, forDownA, forLeftA, forRightA);
-                if (mostFirst === forUpA) {
-                    return "up";
-                } else if (mostFirst === forDownA) {
-                    return "down";
-                } else if (mostFirst === forLeftA) {
-                    return "left";
-                } else if (mostFirst === forRightA) {
-                    return "right";
+                console.log("Votes", counters[0].count, counters[1].count, counters[2].count, counters[3].count);
+
+                let maxSames = [ counters[0] ];
+                for (let i = 1; i < counters.length; i++) {
+                    if(counters[i].count > counters[0].count){
+                        maxSames = [ counters[i] ];
+                    }else{
+                        maxSames.push( counters[i] );
+                    }
                 }
+
+                return maxSames[Math.floor(Math.random() * maxSames.length)].direction;
+
                 break;
             default:
                 console.log(`Sorry, strategy "${strategy}" is not a valid strategy.`);
