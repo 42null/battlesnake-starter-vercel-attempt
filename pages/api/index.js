@@ -4,7 +4,7 @@ export default function handler(req, res) {
 
   const snakeInfo = {
     apiversion: "1",
-    author: "username", //Username for play.battlesnake
+    author: "42null", //Username for play.battlesnake
     color: "#000000",
     head: "default",
     tail: "default",

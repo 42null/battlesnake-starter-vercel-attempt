@@ -1,3 +1,13 @@
+
+import { generateFilledArrayBoard, printBoard } from "./helpers.js";
+
+import { PredictorBoard } from "./predictor.js";
+import { TreeSearch, StrategyEnums } from "./treeSearch.js";
+
+// Game items set at start
+let _boardMaxX = -1,
+    _boardMaxY = -1;
+
 export default function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
 
@@ -12,7 +22,6 @@ export default function handler(req, res) {
     res.status(400).json({ message: "Missing gamestate" });
     return;
   }
-
 
   let isMoveSafe = {
     up: true,
@@ -134,12 +143,14 @@ export default function handler(req, res) {
   const safeMoves = Object.keys(isMoveSafe).filter((key) => isMoveSafe[key]);
   if (safeMoves.includes(pickedMove)) {
     //TODO: Only here with repeat check to account for snake eating and length being off.
-    return { move: pickedMove };
+    res.status(200).json({ move: pickedMove });
+    return;
   }
   console.log("!!!!!! Skipped predicted move!!!!");
   if (safeMoves.length == 0) {
     console.log(`MOVE ${gameState.turn}: No safe moves detected! Moving down`);
     res.status(200).json({ move: "down" });
+    return;
   }
 
   // Choose a random move from the safe moves
@@ -152,4 +163,5 @@ export default function handler(req, res) {
   // console.log(`MOVE ${gameState.turn}: ${nextMove}`);
 
   res.status(200).json({ move: nextMove });
+  return;
 }
