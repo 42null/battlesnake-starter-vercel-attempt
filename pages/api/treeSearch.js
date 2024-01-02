@@ -99,7 +99,7 @@ export class TreeSearch {
 
                     for(let i = 0; i < counters.length; i++){
                         if (path[0] === counters[i].direction) {
-                            counters[i]++;
+                            counters[i].count++;
                             break;
                         }
                     }
@@ -119,13 +119,15 @@ export class TreeSearch {
 
                 let maxSames = [ counters[0] ];
                 for (let i = 1; i < counters.length; i++) {
-                    if(counters[i].count > counters[0].count){
+                    if(counters[i].count > maxSames[0].count){
                         maxSames = [ counters[i] ];
-                    }else{
+                    }else if(counters[i].count === maxSames[0].count){
                         maxSames.push( counters[i] );
                     }
                 }
-
+                // maxSames.forEach(same => {
+                //     console.log("SAME: "+same.direction +"__"+same.count);
+                // })
                 return maxSames[Math.floor(Math.random() * maxSames.length)].direction;
 
                 break;

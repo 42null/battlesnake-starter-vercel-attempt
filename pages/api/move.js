@@ -41,7 +41,6 @@ export default function handler(req, res) {
 
   const _boardMaxX = gameState.board.width - 1;
   const _boardMaxY = gameState.board.height - 1;
-  console.log("~~~" + myLength);
 
   console.log(`Turn # ${gameState.turn} (Current)`);
   // printBoard(predictor.getBoard());
