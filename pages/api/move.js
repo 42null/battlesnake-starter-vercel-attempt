@@ -25,12 +25,6 @@ export default function handler(req, res) {
     left: true,
     right: true,
   };
-  let isMoveKill = {
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-  };
 
   const predictor = new PredictorBoard(gameState);
 
@@ -45,29 +39,20 @@ export default function handler(req, res) {
   console.log(`Turn # ${gameState.turn} (Current)`);
   // printBoard(predictor.getBoard());
   console.log("(Expected)");
+
   predictor.predictNextTurn('');
   // printBoard(predictor.getBoard());
   predictor.predictNextTurn('');
-  printBoard(predictor.getBoard());
+  // predictor.predictNextTurn('');
+  // printBoard(predictor.getBoard());
 
-  // Check for paths avaiable
-  const treeSearch = new TreeSearch(
-      predictor.getBoard(),
-      myHead.x,
-      myHead.y,
-  );
+  // const fillTest = new PredictorBoard(gameState);
+  // fillTest.getBoard()
+
+  // Check for paths available
+  const treeSearch = new TreeSearch( predictor.getBoard(), myHead.x, myHead.y );
   treeSearch.generatePaths(myLength);
   const pickedMove = treeSearch.pickPath(StrategyEnums.MostOptions);
-  // if(pickedMove !== "backup"){
-  //     return { move: pickedMove };
-  // }
-
-  // We've included code to prevent your Battlesnake from moving backwards
-  // const myHead = gameState.you.body[0];
-  // const myNeck = gameState.you.body[1];
-  // const myLength = gameState.you.length;
-
-  // let killOpponentLength = -1;
 
   // CHECK for collisions with neck
   if (myNeck.x < myHead.x) {
@@ -88,7 +73,6 @@ export default function handler(req, res) {
   if (myHead.y == 0) {
     isMoveSafe.down = false;
   } else if (myHead.y == _boardMaxY) {
-    // console.log("Not safe up");
     isMoveSafe.up = false;
   }
 

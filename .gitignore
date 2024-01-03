@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Ignoring updates to api/index.js to keep local copy snakeS color seprate from published version.
+pages/api/index.js
+
 # dependencies
 /node_modules
 /.pnp

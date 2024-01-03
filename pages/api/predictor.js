@@ -37,72 +37,59 @@ export class PredictorBoard {
 
         for (let i = 0; i < this.boardArray.length; i++) {
             for (let j = 0; j < this.boardArray[0].length; j++) {
-                if (this.boardArray[i][j][0] === " ") {
+                if (this.boardArray[i][j].fill === " ") {
                     // for (let k = -1; k <= 1; k++) {
                     //   for (let l = -1; l <= 1; l++) {
 
                     // TODO: Make this not use try in catching out of bounds
                     try {
-                        if (this.boardArray[i - 1][j][1] > 0) {
-                            // this.boardArray[i][j][0] = waveChar;
-                            this.boardArray[i][j][0] = (this.boardArray[i][j][2]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i - 1][j][1] + 1) : waveChar);
-                            this.boardArray[i][j][1] = -(this.boardArray[i - 1][j][1] + 1);
+                        if (this.boardArray[i - 1][j].future > 0) {
+                            // this.boardArray[i][j].fill = waveChar;                            this.boardArray[i][j].fill = (this.boardArray[i][j][2]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i - 1][j].future + 1) : waveChar);
+                            this.boardArray[i][j].future = -(this.boardArray[i - 1][j].future + 1);
                             this.boardArray[i][j][2] = this.boardArray[i - 1][j][2];
                         }
                     } catch (e) {}
                     try {
-                        if (this.boardArray[i + 1][j][1] > 0) {
-                            // this.boardArray[i][j][0] = waveChar;
-                            this.boardArray[i][j][0] = (this.boardArray[i][j][0]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i + 1][j][1] + 1) : waveChar);
-                            this.boardArray[i][j][1] = -(this.boardArray[i + 1][j][1] + 1);
+                        if (this.boardArray[i + 1][j].future > 0) {
+                            // this.boardArray[i][j].fill = waveChar;
+                            this.boardArray[i][j].fill = (this.boardArray[i][j][2]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i + 1][j].future + 1) : waveChar);
+                            this.boardArray[i][j].future = -(this.boardArray[i + 1][j].future + 1);
                             this.boardArray[i][j][2] = this.boardArray[i + 1][j][2];
                         }
                     } catch (e) {}
                     try {
-                        if (this.boardArray[i][j - 1][1] > 0) {
-                            // this.boardArray[i][j][0] = waveChar;
-                            this.boardArray[i][j][0] = (this.boardArray[i][j][0]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i][j - 1][1] + 1) : waveChar);
-                            this.boardArray[i][j][1] = -(this.boardArray[i][j - 1][1] + 1);
+                        if (this.boardArray[i][j - 1].future > 0) {
+                            // this.boardArray[i][j].fill = waveChar;
+                            this.boardArray[i][j].fill = (this.boardArray[i][j][2]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i][j - 1].future + 1) : waveChar);
+                            this.boardArray[i][j].future = -(this.boardArray[i][j - 1].future + 1);
                             this.boardArray[i][j][2] = this.boardArray[i][j - 1][2];
                         }
                     } catch (e) {}
                     try {
-                        if (this.boardArray[i][j + 1][1] > 0) {
-                            // this.boardArray[i][j][0] = waveChar;
-                            this.boardArray[i][j][0] = (this.boardArray[i][j][0]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i][j + 1][1] + 1) : waveChar);
-                            this.boardArray[i][j][1] = -(this.boardArray[i][j + 1][1] + 1);
+                        if (this.boardArray[i][j + 1].future > 0) {
+                            // this.boardArray[i][j].fill = waveChar;
+                            this.boardArray[i][j].fill = (this.boardArray[i][j][2]==="JavascriptStarterBasis1a" || true ? (this.boardArray[i][j + 1].future + 1) : waveChar);
+                            this.boardArray[i][j].future = -(this.boardArray[i][j + 1].future + 1);
                             this.boardArray[i][j][2] = this.boardArray[i][j + 1][2];
                         }
                     } catch (e) {}
                     // // TODO: Make this not use try in catching out of bounds
-                    // try {
-                    //   if (this.boardArray[i + k][j + l][1] > 0) {
-                    //     this.boardArray[i][j][0] = "A";
-                    //     this.boardArray[i][j][1] = -(
-                    //       this.boardArray[i + k][j + l][1] + 1
-                    //     );
-                    //   }
-                    // } catch (e) {}
                 }
-                // if(i > 1 && 0this.boardArray[i][j][0]){
-
-                // }
-                // this.boardArray[i][j][0] = "A";
             }
         }
 
         for (let i = 0; i < this.boardArray.length; i++) {
             for (let j = 0; j < this.boardArray[0].length; j++) {
-                if (this.boardArray[i][j][1] < 0) {
-                    this.boardArray[i][j][1] = -this.boardArray[i][j][1];
+                if (this.boardArray[i][j].future < 0) {
+                    this.boardArray[i][j].future = -this.boardArray[i][j].future;
                 }
             }
         }
     }
 
     placePoint(x, y, value, snakeMax) {
-        this.boardArray[x][y][0] = value;
-        this.boardArray[x][y][1] = snakeMax;
+        this.boardArray[x][y].fill = value;
+        this.boardArray[x][y].future = snakeMax;
     }
 
     populateSnake(snake, max) {

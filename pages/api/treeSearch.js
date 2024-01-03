@@ -1,10 +1,10 @@
-import { printPath } from "./helpers.js";
+import { printPath, isValidPosition } from "./helpers.js";
 
 export const StrategyEnums = Object.freeze({
     MostOptions: 0,
 });
 
-class P {
+export class P {
     constructor(x, y, directonTaken) {
         this.x = x;
         this.y = y;
@@ -21,39 +21,31 @@ export class TreeSearch {
     }
 
     getPoint(x, y) {
-        return this.boardArray[x][y][1];
+        return this.boardArray[x][y].future;
     }
 
-    checkSourroundings(p, targetNum) {
-        const sourroundings = [];
-        try {
-            if (this.boardArray[p.x - 1][p.y][1] === targetNum) {
-                sourroundings.push(new P(p.x - 1, p.y, "left"));
+    checkSurroundings(p, targetNum) {
+        const surroundings = [];
+
+        const addIfValid = (x, y, direction) => {
+            if (isValidPosition(this.boardArray, x, y) && this.boardArray[x][y].future === targetNum) {
+                surroundings.push(new P(x, y, direction));
             }
-        } catch (e) {}
-        try {
-            if (this.boardArray[p.x + 1][p.y][1] === targetNum) {
-                sourroundings.push(new P(p.x + 1, p.y, "right"));
-            }
-        } catch (e) {}
-        try {
-            if (this.boardArray[p.x][p.y - 1][1] === targetNum) {
-                sourroundings.push(new P(p.x, p.y - 1, "down"));
-            }
-        } catch (e) {}
-        try {
-            if (this.boardArray[p.x][p.y + 1][1] === targetNum) {
-                sourroundings.push(new P(p.x, p.y + 1, "up"));
-            }
-        } catch (e) {}
-        return sourroundings;
+        };
+
+        addIfValid(p.x - 1, p.y, "left");
+        addIfValid(p.x + 1, p.y, "right");
+        addIfValid(p.x, p.y - 1, "down");
+        addIfValid(p.x, p.y + 1, "up");
+
+        return surroundings;
     }
 
     generatePaths(numIndex) {
         //Yes I know this isn't a very efficent way to do trees, but I am getting a working prototype done
 
         numIndex++;
-        const aviablePaths = this.checkSourroundings(this.starting, numIndex++);
+        const aviablePaths = this.checkSurroundings(this.starting, numIndex++);
         for (let i = 0; i < aviablePaths.length; i++) {
             // console.log(aviablePaths[i].x,aviablePaths[i].y,aviablePaths[i].d);
             this.paths.push([aviablePaths[i]]);
@@ -61,7 +53,7 @@ export class TreeSearch {
         const currentPathsTotal = this.paths.length;
         for (let i = 0; i < currentPathsTotal; i++) {
             const currentPath = this.paths[0];
-            const nextOptions = this.checkSourroundings(currentPath[0], numIndex);
+            const nextOptions = this.checkSurroundings(currentPath[0], numIndex);
             for (let j = 0; j < nextOptions.length; j++) {
                 this.paths.push([...currentPath, nextOptions[j]]);
                 // console.log([...currentPath, nextOptions[j]]);
@@ -83,19 +75,19 @@ export class TreeSearch {
                 condensed.splice(i--, 1);
             }
         }
-        condensed.forEach((item) => printPath(item));
+        // condensed.forEach((item) => printPath(item));
         console.log();
 
         switch (strategy) {
             case StrategyEnums.MostOptions:
-                // TODO: WILL MAKE MORE EFFICENT ASAP
+                // TODO: WILL MAKE MORE EFFICIENT ASAP
                 let counters = [{count: 0, direction: "up"},
                                 {count: 0, direction: "down"},
                                 {count: 0, direction: "left"},
                                 {count: 0, direction: "right"}];
 
                 condensed.forEach((path) => {
-                    console.log("PATH" + JSON.stringify(path));
+                    // console.log("PATH" + JSON.stringify(path));
 
                     for(let i = 0; i < counters.length; i++){
                         if (path[0] === counters[i].direction) {

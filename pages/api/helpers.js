@@ -3,14 +3,21 @@ export function generateFilledArrayBoard(width, height, fill) {
     for (let i = 0; i < height; i++) {
         let row = new Array(width);
         for (let j = 0; j < width; j++) {
-            row[j] = new Array(3);
-            row[j][0] = fill;
-            row[j][1] = 0; //Future path value
-            row[j][2] = false; //Snake name attributed
+            row[j] = {
+                fill: fill,
+                future: 0, //Future path value
+                name: false, //Snake name attribute
+                floodFill: false //FloodFill touched
+            };
         }
         array[i] = row;
     }
     return array;
+}
+
+// Avoid checking every single time //TODO: MOVE OUT OF CHECKING EVERY TIME
+export function isValidPosition(board, x, y){
+    return x >= 0 && x < board.length && y >= 0 && y < board[0].length;
 }
 
 // export function printBoard(board) {
@@ -31,7 +38,7 @@ export function printBoard(board) {
         process.stdout.write("|");
 
         for (let row = 0; row < board.length; row++) {
-            process.stdout.write(String(board[row][coloum][0]));
+            process.stdout.write(String(board[row][coloum].fill));
         }
 
         console.log("|");
@@ -41,6 +48,7 @@ export function printBoard(board) {
 }
 
 export function printPath(path) {
+    process.stdout.write("Path: ");
     path.forEach((direction) => process.stdout.write(direction + " "));
     console.log();
 }
