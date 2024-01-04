@@ -15,6 +15,15 @@ export function generateFilledArrayBoard(width, height, fill) {
     return array;
 }
 
+export function clearFloodFilled(board){
+    for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[i].length; j++) {
+            board[i][j].floodFilled = false;
+        }
+    }
+    return board;
+}
+
 // Avoid checking every single time //TODO: MOVE OUT OF CHECKING EVERY TIME
 export function isValidPosition(board, x, y){
     return x >= 0 && x < board.length && y >= 0 && y < board[0].length;
@@ -32,13 +41,18 @@ export function isValidPosition(board, x, y){
 //   console.log("----------\n");
 // }
 
-export function printBoard(board) {
+export function printBoard(board, property) {
     console.log(" 0123456789-");
     for (let coloum = board[0].length - 1; coloum >= 0; coloum--) {
         process.stdout.write("|");
 
         for (let row = 0; row < board.length; row++) {
-            process.stdout.write(String(board[row][coloum].fill));
+            if(property === "floodFill"){
+                process.stdout.write(String(board[row][coloum].floodFilled)? '░' : String(board[row][coloum].fill));
+            }else{
+                process.stdout.write(String(board[row][coloum].fill));
+            }
+
         }
 
         console.log("|");

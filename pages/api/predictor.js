@@ -1,5 +1,5 @@
-import { generateFilledArrayBoard, printBoard, clamp } from "./helpers.js";
-import { floodFill } from "./algorithms.js";
+import {generateFilledArrayBoard, printBoard, clamp, isValidPosition, clearFloodFilled} from "./helpers.js";
+import { floodFill, setLastFloodFillCounter, getLastFloodFillCounter } from "./algorithms.js";
 
 export class PredictorBoard {
     getBoard() {
@@ -11,8 +11,6 @@ export class PredictorBoard {
         this.width = gameState.board.width;
         this.boardArray = generateFilledArrayBoard(this.height, this.width, '·');
 
-        // TODO: Having different arrays that must be in sync is bad code and a bad practice, will move over after MVP
-        // this.snakeIndexes = new Array(gameState.board.snakes.length);
         this.snakeMaxes = new Array(gameState.board.snakes.length);
 
         // console.log("JSON.stringify(gameState)");
@@ -30,14 +28,51 @@ export class PredictorBoard {
         });
     }
 
-    showFill(x, y){
-        this.boardArray[x][y].fill = '·';
-        this.boardArray = floodFill(this.boardArray, x, y);
+    calculateFill(x, y){
+
+        setLastFloodFillCounter(0);
+        this.boardArray = floodFill(this.boardArray, x-1, y);
+        const south = getLastFloodFillCounter();
+        this.boardArray = clearFloodFilled(this.boardArray);
+
+        setLastFloodFillCounter(0);
+        this.boardArray = floodFill(this.boardArray, x+1, y);
+        const east = getLastFloodFillCounter();
+        this.boardArray = clearFloodFilled(this.boardArray);
+
+        setLastFloodFillCounter(0);
+        this.boardArray = floodFill(this.boardArray, x, y-1);
+        const north = getLastFloodFillCounter();
+        this.boardArray = clearFloodFilled(this.boardArray);
+
+        setLastFloodFillCounter(0);
+        this.boardArray = floodFill(this.boardArray, x, y+1);
+        const west = getLastFloodFillCounter();
+        this.boardArray = clearFloodFilled(this.boardArray);
+
+        if(isValidPosition(this.boardArray, x-1, y)){
+            this.boardArray[x-1][y].fill = 'W';
+        }
+        if(isValidPosition(this.boardArray, x+1, y)) {
+            this.boardArray[x+1][y].fill = 'E';
+        }
+        if(isValidPosition(this.boardArray, x, y-1)) {
+            this.boardArray[x][y-1].fill = 'S';
+        }
+        if(isValidPosition(this.boardArray, x, y+1)) {
+            this.boardArray[x][y+1].fill = 'N';
+        }
+
+        // this.boardArray = floodFill(this.boardArray, x, y);
         // for (let i = 0; i < this.boardArray.length; i++) {
         //     for (let j = 0; j < this.boardArray[0].length; j++) {
         //         this.boardArray[i][j].fill = ((this.boardArray[i][j].floodFilled === false)? this.boardArray[i][j].fill : '░');
         //     }
         // }
+        return [{count: east, direction: "right"},
+            {count: north, direction: "down"},
+            {count: south, direction: "left"},
+            {count: west, direction: "up"}];
     }
 
     predictNextTurn(waveChar) {
@@ -48,7 +83,7 @@ export class PredictorBoard {
 
         for (let i = 0; i < this.boardArray.length; i++) {
             for (let j = 0; j < this.boardArray[0].length; j++) {
-                if (this.boardArray[i][j].fill === '·') {
+                if (this.boardArray[i][j].fill === '·' || this.boardArray[i][j].fill === '░') {
                     // for (let k = -1; k <= 1; k++) {
                     //   for (let l = -1; l <= 1; l++) {
 
@@ -105,36 +140,23 @@ export class PredictorBoard {
 
     populateSnake(snake, max) {
         this.placePoint(snake.body[0].x, snake.body[0].y, '0', 0);
-        for(let i = 1; i < snake.body.length-1; i++){
-            const xDiffB = snake.body[i].x - snake.body[i-1].x;
-            const yDiffB = snake.body[i].y - snake.body[i-1].y;
-            const xDiffA = snake.body[i].x - snake.body[i+1].x;
-            const yDiffA = snake.body[i].y - snake.body[i+1].y;
-            // let displayChar = '';
-            // if(xDiffB<0){
-            //     displayChar = ;
-            // }
-            console.log("!", xDiffB, yDiffB, xDiffA, yDiffA);
-            this.placePoint(snake.body[i].x, snake.body[i].y, '0', 0);
-        }
+        this.placePoint(snake.body[snake.body.length-1].x, snake.body[snake.body.length-1].y, '', 0);
 
-        // print("┌───────┐")
-        // print("│       │")
-        // print("└───────┘")
+        // TODO: Fix to work with ┌└┐┘─│ characters
 
         // for (let j = snake.body.length - 1; j >= 0; j--) {
         for (let j = 1; j < snake.body.length; j++) {
             const bodyPoint = snake.body[j];
             this.placePoint(bodyPoint.x, bodyPoint.y, snake.body.length - j - 1, 0);
         }
-        // // Head with maxer
-        // const bodyPoint = snake.body[0];
-        // this.placePoint(
-        //     bodyPoint.x,
-        //     bodyPoint.y,
-        //     // snake.body.length - j - 1,
-        //     (snake.name==="JavascriptStarterBasis1a"? max: '▒'),
-        //     max,
-        // );
+        // Head with maxer
+        const bodyPoint = snake.body[0];
+        this.placePoint(
+            bodyPoint.x,
+            bodyPoint.y,
+            // snake.body.length - j - 1,
+            (snake.name==="JavascriptStarterBasis1a"? max: '▒'),
+            max,
+        );
     }
 }
