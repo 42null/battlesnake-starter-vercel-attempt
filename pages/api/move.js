@@ -97,6 +97,8 @@ export default function handler(req, res) {
       }
     }
 
+    res.status(200).json({ move: maxSamesNoFuture[Math.floor(Math.random() * maxSamesNoFuture.length)].direction });
+    return;
     // // Check for paths available
     // // const treeSearch = new TreeSearch( predictor.getBoard(), myHead.x, myHead.y );
     // // treeSearch.generatePaths(myLength);
