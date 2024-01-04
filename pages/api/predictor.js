@@ -13,6 +13,10 @@ export class PredictorBoard {
 
         this.snakeMaxes = new Array(gameState.board.snakes.length);
 
+        this.snakeYou = gameState.you;
+        this.snakesOpponents = gameState.board.snakes.filter((snake) =>{
+            return snake.id !== this.snakeYou.id;
+        });
         // console.log("JSON.stringify(gameState)");
         // console.log(JSON.stringify(gameState));
         // printBoard(this.boardArray);
@@ -73,6 +77,26 @@ export class PredictorBoard {
             {count: north, direction: "down"},
             {count: south, direction: "left"},
             {count: west, direction: "up"}];
+    }
+
+
+    predictOpponentsNextTurn(waveChar) {
+        this.snakesOpponents.forEach(snake => {
+            const x = snake.head.x;
+            const y = snake.head.y;
+            if(isValidPosition(this.boardArray, x-1, y)){
+                this.boardArray[x-1][y].fill = waveChar;
+            }
+            if(isValidPosition(this.boardArray, x+1, y)) {
+                this.boardArray[x+1][y].fill = waveChar;
+            }
+            if(isValidPosition(this.boardArray, x, y-1)) {
+                this.boardArray[x][y-1].fill = waveChar;
+            }
+            if(isValidPosition(this.boardArray, x, y+1)) {
+                this.boardArray[x][y+1].fill = waveChar;
+            }
+        });
     }
 
     predictNextTurn(waveChar) {
