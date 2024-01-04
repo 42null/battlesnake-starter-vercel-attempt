@@ -49,7 +49,7 @@ export function printBoard(board) {
 
 export function printPath(path) {
     process.stdout.write("Path: ");
-    path.forEach((direction) => process.stdout.write(direction + '·'));
+    path.forEach((direction) => process.stdout.write(direction + ' '));
     console.log();
 }
 

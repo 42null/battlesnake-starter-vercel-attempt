@@ -104,19 +104,37 @@ export class PredictorBoard {
     }
 
     populateSnake(snake, max) {
+        this.placePoint(snake.body[0].x, snake.body[0].y, '0', 0);
+        for(let i = 1; i < snake.body.length-1; i++){
+            const xDiffB = snake.body[i].x - snake.body[i-1].x;
+            const yDiffB = snake.body[i].y - snake.body[i-1].y;
+            const xDiffA = snake.body[i].x - snake.body[i+1].x;
+            const yDiffA = snake.body[i].y - snake.body[i+1].y;
+            // let displayChar = '';
+            // if(xDiffB<0){
+            //     displayChar = ;
+            // }
+            console.log("!", xDiffB, yDiffB, xDiffA, yDiffA);
+            this.placePoint(snake.body[i].x, snake.body[i].y, '0', 0);
+        }
+
+        // print("┌───────┐")
+        // print("│       │")
+        // print("└───────┘")
+
         // for (let j = snake.body.length - 1; j >= 0; j--) {
         for (let j = 1; j < snake.body.length; j++) {
             const bodyPoint = snake.body[j];
             this.placePoint(bodyPoint.x, bodyPoint.y, snake.body.length - j - 1, 0);
         }
-        // Head with maxer
-        const bodyPoint = snake.body[0];
-        this.placePoint(
-            bodyPoint.x,
-            bodyPoint.y,
-            // snake.body.length - j - 1,
-            (snake.name==="JavascriptStarterBasis1a"? max: '▒'),
-            max,
-        );
+        // // Head with maxer
+        // const bodyPoint = snake.body[0];
+        // this.placePoint(
+        //     bodyPoint.x,
+        //     bodyPoint.y,
+        //     // snake.body.length - j - 1,
+        //     (snake.name==="JavascriptStarterBasis1a"? max: '▒'),
+        //     max,
+        // );
     }
 }
