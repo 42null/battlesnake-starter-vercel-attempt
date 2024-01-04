@@ -1,15 +1,14 @@
 export default function handler(req, res) {
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
 
-  //Not connected anymore to git tracking in order to diffrenteriate local & published copy in testing.
-  const snakeInfo = {
-    apiversion: "1",
-    author: "42null",
-    color: "#000000",
-    head: "default",
-    tail: "default",
-  };
+    const snakeInfo = {
+        apiversion: "1",
+        author: "42null",
+        color: "#2e77ff",//Color for deployed remote version, controlled via gitignore
+        head: "nr-rocket",
+        tail: "bolt",
+    };
 
-  res.json(snakeInfo);
+    res.json(snakeInfo);
 }

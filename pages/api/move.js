@@ -76,7 +76,7 @@ export default function handler(req, res) {
   endTime = new Date();
   console.log((endTime - startTime)+"ms");
 
-  if(maxSames.length !== 0){
+  if(maxSames[0].count !== 0){
     res.status(200).json({ move: maxSames[Math.floor(Math.random() * maxSames.length)].direction });
     return;
   }else{//Fallback - flood-fill is using a prediction so can state that no spaces are available when they are, fallback to starter-simple
