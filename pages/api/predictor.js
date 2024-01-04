@@ -1,4 +1,5 @@
 import { generateFilledArrayBoard, printBoard, clamp } from "./helpers.js";
+import { floodFill } from "./algorithms.js";
 
 export class PredictorBoard {
     getBoard() {
@@ -8,9 +9,9 @@ export class PredictorBoard {
     constructor(gameState) {
         this.height = gameState.board.height;
         this.width = gameState.board.width;
-        this.boardArray = generateFilledArrayBoard(this.height, this.width, " ");
+        this.boardArray = generateFilledArrayBoard(this.height, this.width, '·');
 
-        // TODO: Having diffrent arrays that must be in sync is bad code and a bad pratice, will move over after MVP
+        // TODO: Having different arrays that must be in sync is bad code and a bad practice, will move over after MVP
         // this.snakeIndexes = new Array(gameState.board.snakes.length);
         this.snakeMaxes = new Array(gameState.board.snakes.length);
 
@@ -29,6 +30,16 @@ export class PredictorBoard {
         });
     }
 
+    showFill(x, y){
+        this.boardArray[x][y].fill = '·';
+        this.boardArray = floodFill(this.boardArray, x, y);
+        // for (let i = 0; i < this.boardArray.length; i++) {
+        //     for (let j = 0; j < this.boardArray[0].length; j++) {
+        //         this.boardArray[i][j].fill = ((this.boardArray[i][j].floodFilled === false)? this.boardArray[i][j].fill : '░');
+        //     }
+        // }
+    }
+
     predictNextTurn(waveChar) {
         //   let printCacaculated = false;
         // if(waveChar.length != 0){
@@ -37,7 +48,7 @@ export class PredictorBoard {
 
         for (let i = 0; i < this.boardArray.length; i++) {
             for (let j = 0; j < this.boardArray[0].length; j++) {
-                if (this.boardArray[i][j].fill === " ") {
+                if (this.boardArray[i][j].fill === '·') {
                     // for (let k = -1; k <= 1; k++) {
                     //   for (let l = -1; l <= 1; l++) {
 
@@ -104,7 +115,7 @@ export class PredictorBoard {
             bodyPoint.x,
             bodyPoint.y,
             // snake.body.length - j - 1,
-            (snake.name==="JavascriptStarterBasis1a"? max: "▯"),
+            (snake.name==="JavascriptStarterBasis1a"? max: '▒'),
             max,
         );
     }

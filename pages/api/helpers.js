@@ -7,7 +7,7 @@ export function generateFilledArrayBoard(width, height, fill) {
                 fill: fill,
                 future: 0, //Future path value
                 name: false, //Snake name attribute
-                floodFill: false //FloodFill touched
+                floodFilled: false //FloodFill touched
             };
         }
         array[i] = row;
@@ -49,7 +49,7 @@ export function printBoard(board) {
 
 export function printPath(path) {
     process.stdout.write("Path: ");
-    path.forEach((direction) => process.stdout.write(direction + " "));
+    path.forEach((direction) => process.stdout.write(direction + '·'));
     console.log();
 }
 

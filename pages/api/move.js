@@ -46,8 +46,10 @@ export default function handler(req, res) {
   // predictor.predictNextTurn('');
   // printBoard(predictor.getBoard());
 
-  // const fillTest = new PredictorBoard(gameState);
-  // fillTest.getBoard()
+  const fillTest = new PredictorBoard(gameState);
+  // printBoard(fillTest.getBoard());
+  fillTest.showFill(myHead.x, myHead.y);
+  printBoard(fillTest.getBoard());
 
   // Check for paths available
   const treeSearch = new TreeSearch( predictor.getBoard(), myHead.x, myHead.y );

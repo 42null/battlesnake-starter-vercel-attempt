@@ -76,7 +76,7 @@ export class TreeSearch {
             }
         }
         // condensed.forEach((item) => printPath(item));
-        console.log();
+        // console.log();
 
         switch (strategy) {
             case StrategyEnums.MostOptions:
