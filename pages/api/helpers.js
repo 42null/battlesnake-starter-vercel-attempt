@@ -1,3 +1,6 @@
+import { handler } from "./index.js";
+
+
 export function generateFilledArrayBoard(width, height, fill) {
     let array = new Array(height);
     for (let i = 0; i < height; i++) {
@@ -42,6 +45,10 @@ export function isValidPosition(board, x, y){
 // }
 
 export function printBoard(board, property) {
+    // console.log("!!!!!!######"+handler.snakeInfo.color === "2e77ff");
+    // if(){
+    //
+    // }
     console.log(" 0123456789-");
     for (let coloum = board[0].length - 1; coloum >= 0; coloum--) {
         process.stdout.write("|");

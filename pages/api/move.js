@@ -1,9 +1,13 @@
 
 import {generateFilledArrayBoard, isValidPosition, printBoard} from "./helpers.js";
+import { setName } from "./index.js";
+
 
 import { PredictorBoard } from "./predictor.js";
 import { TreeSearch, StrategyEnums } from "./treeSearch.js";
 import {floodFill} from "./algorithms";
+
+export let myName = 'info run + ping not yet ran';
 
 export default function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -19,7 +23,6 @@ export default function handler(req, res) {
     res.status(400).json({ message: "Missing gamestate" });
     return;
   }
-
   let isMoveSafe = {
     up: true,
     down: true,

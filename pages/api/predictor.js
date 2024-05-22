@@ -36,7 +36,7 @@ export class PredictorBoard {
 
         setLastFloodFillCounter(0);
         this.boardArray = floodFill(this.boardArray, x-1, y);
-        const south = getLastFloodFillCounter();
+        const west = getLastFloodFillCounter();
         this.boardArray = clearFloodFilled(this.boardArray);
 
         setLastFloodFillCounter(0);
@@ -46,12 +46,12 @@ export class PredictorBoard {
 
         setLastFloodFillCounter(0);
         this.boardArray = floodFill(this.boardArray, x, y-1);
-        const north = getLastFloodFillCounter();
+        const south = getLastFloodFillCounter();
         this.boardArray = clearFloodFilled(this.boardArray);
 
         setLastFloodFillCounter(0);
         this.boardArray = floodFill(this.boardArray, x, y+1);
-        const west = getLastFloodFillCounter();
+        const north = getLastFloodFillCounter();
         this.boardArray = clearFloodFilled(this.boardArray);
 
         if(isValidPosition(this.boardArray, x-1, y)){
@@ -74,9 +74,9 @@ export class PredictorBoard {
         //     }
         // }
         return [{count: east, direction: "right"},
-            {count: north, direction: "down"},
-            {count: south, direction: "left"},
-            {count: west, direction: "up"}];
+            {count: south, direction: "down"},
+            {count: west, direction: "left"},
+            {count: north, direction: "up"}];
     }
 
 
